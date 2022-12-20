@@ -79,9 +79,6 @@ public class MainActivity extends AppCompatActivity {
                         });
 
                     }
-
-
-
                     @Override
                     public void onPermissionDenied(PermissionDeniedResponse permissionDeniedResponse) {
                         Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
@@ -93,8 +90,6 @@ public class MainActivity extends AppCompatActivity {
 
 
                     }
-
-
                     @Override
                     public void onPermissionRationaleShouldBeShown(PermissionRequest permissionRequest, PermissionToken permissionToken) {
                         permissionToken.continuePermissionRequest();

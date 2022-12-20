@@ -59,6 +59,7 @@ public class PlaySong extends AppCompatActivity implements ActionPlaying {
         next = findViewById(R.id.next);
         play = findViewById(R.id.play);
         player();
+
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
@@ -91,9 +92,11 @@ public class PlaySong extends AppCompatActivity implements ActionPlaying {
 
             @Override
             public void run() {
-                try {
-                    seekBar.setProgress(mediaPlayer.getCurrentPosition());
-                } catch (Exception e) {
+                if (mediaPlayer != null) {
+                    try {
+                        seekBar.setProgress(mediaPlayer.getCurrentPosition());
+                    } catch (Exception ignored) {
+                    }
                 }
             }
         }, 0, 1000);
@@ -106,7 +109,6 @@ public class PlaySong extends AppCompatActivity implements ActionPlaying {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-
             }
 
             @Override
@@ -188,6 +190,7 @@ public class PlaySong extends AppCompatActivity implements ActionPlaying {
         Uri uri = Uri.parse(songs.get(position).toString());
         mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
         mediaPlayer.start();
+        seekBar.setMax(mediaPlayer.getDuration());
     }
 
 
