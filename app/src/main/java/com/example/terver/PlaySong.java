@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -154,6 +155,7 @@ public class PlaySong extends AppCompatActivity implements ActionPlaying {
             @Override
             public void onCompletion(MediaPlayer mediaPlayer) {
                 nextSong();
+                Toast.makeText(PlaySong.this, "next song", Toast.LENGTH_SHORT).show();
             }
         });
         mediaPlayer.start();
