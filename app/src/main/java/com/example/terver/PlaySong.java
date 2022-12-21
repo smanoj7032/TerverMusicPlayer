@@ -60,32 +60,10 @@ public class PlaySong extends AppCompatActivity implements ActionPlaying {
         play = findViewById(R.id.play);
         player();
 
-        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-            @Override
-            public void onCompletion(MediaPlayer mediaPlayer) {
-                nextSong();
-            }
-        });
-
-        play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                playPause();
-            }
-        });
-        previous.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                previousSong();
-            }
-        });
-        next.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View view) {
-                nextSong();
-            }
-        });
+        mediaPlayer.setOnCompletionListener(mediaPlayer -> nextSong());
+        play.setOnClickListener(view -> playPause());
+        previous.setOnClickListener(view -> previousSong());
+        next.setOnClickListener(view -> nextSong());
 
         Timer timer = new Timer();
         timer.scheduleAtFixedRate(new TimerTask() {
