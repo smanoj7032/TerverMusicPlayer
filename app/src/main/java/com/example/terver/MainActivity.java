@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.terver.databinding.ActivityMainBinding;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -26,8 +27,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-
-    private ListView listView;
+    private ActivityMainBinding binding;
     private ArrayList<File> mySongs;
 
 
@@ -35,8 +35,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        listView = findViewById(R.id.list_view);
         Dexter.withContext(this)
                 .withPermission(Manifest.permission.READ_EXTERNAL_STORAGE)
                 .withListener(new PermissionListener() {
@@ -53,12 +51,12 @@ public class MainActivity extends AppCompatActivity {
                             }
                         }
                         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(MainActivity.this, android.R.layout.simple_list_item_1, items);
-                        listView.setAdapter(arrayAdapter);
-                        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        binding.listView.setAdapter(arrayAdapter);
+                        binding.listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                                 Intent go = new Intent(MainActivity.this, PlaySong.class);
-                                String currentSong = listView.getItemAtPosition(position).toString();
+                                String currentSong = binding.listView.getItemAtPosition(position).toString();
                                 go.putExtra("SongList", mySongs);
                                 go.putExtra("currentSong", currentSong);
                                 go.putExtra("position", position);

@@ -12,19 +12,20 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.terver.databinding.ActivityPlaySongBinding;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 public class PlaySong extends AppCompatActivity implements ActionPlaying {
-    private TextView textView;
-    private ImageView play, previous, next;
+    private ActivityPlaySongBinding binding;
     public static ArrayList<File> songs = new ArrayList<>();
     private MediaPlayer mediaPlayer;
     private String textContent;
     private int position;
-    private SeekBar seekBar;
+
 
 
     @Override
@@ -34,30 +35,14 @@ public class PlaySong extends AppCompatActivity implements ActionPlaying {
         mediaPlayer.release();
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-//        Intent intent1 = new Intent(PlaySong.this, MusicService.class);
-//        bindService(intent1, this, BIND_AUTO_CREATE);
 
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-//        unbindService(this);
-    }
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_song);
-        textView = findViewById(R.id.textView);
-        previous = findViewById(R.id.previous);
-        seekBar = findViewById(R.id.seekBar);
-        next = findViewById(R.id.next);
-        play = findViewById(R.id.play);
+
         player();
 
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -67,19 +52,19 @@ public class PlaySong extends AppCompatActivity implements ActionPlaying {
             }
         });
 
-        play.setOnClickListener(new View.OnClickListener() {
+        binding.play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 playPause();
             }
         });
-        previous.setOnClickListener(new View.OnClickListener() {
+        binding.previous.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 previousSong();
             }
         });
-        next.setOnClickListener(new View.OnClickListener() {
+        binding.next.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View view) {
@@ -94,14 +79,14 @@ public class PlaySong extends AppCompatActivity implements ActionPlaying {
             public void run() {
                 if (mediaPlayer != null) {
                     try {
-                        seekBar.setProgress(mediaPlayer.getCurrentPosition());
+                        binding.seekBar.setProgress(mediaPlayer.getCurrentPosition());
                     } catch (Exception ignored) {
                     }
                 }
             }
         }, 0, 1000);
 
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+        binding.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
 
@@ -134,10 +119,10 @@ public class PlaySong extends AppCompatActivity implements ActionPlaying {
         });
 
         mediaPlayer.start();
-        seekBar.setMax(mediaPlayer.getDuration());
+        binding.seekBar.setMax(mediaPlayer.getDuration());
         textContent = songs.get(position).getName().toString();
-        textView.setText(textContent);
-        play.setImageResource(R.drawable.ic_pause);
+        binding.textView.setText(textContent);
+        binding.play.setImageResource(R.drawable.ic_pause);
 
     }
 
@@ -159,22 +144,22 @@ public class PlaySong extends AppCompatActivity implements ActionPlaying {
             }
         });
         mediaPlayer.start();
-        seekBar.setMax(mediaPlayer.getDuration());
+        binding.seekBar.setMax(mediaPlayer.getDuration());
         textContent = songs.get(position).getName().toString();
-        textView.setText(textContent);
-        play.setImageResource(R.drawable.ic_pause);
+        binding.textView.setText(textContent);
+        binding.play.setImageResource(R.drawable.ic_pause);
     }
 
     @Override
     public void playPause() {
         if (mediaPlayer.isPlaying()) {
             mediaPlayer.pause();
-            play.setImageResource(R.drawable.ic_play);
+            binding.play.setImageResource(R.drawable.ic_play);
 
         } else {
             mediaPlayer.start();
 
-            play.setImageResource(R.drawable.ic_pause);
+            binding.play.setImageResource(R.drawable.ic_pause);
         }
     }
 
@@ -184,13 +169,13 @@ public class PlaySong extends AppCompatActivity implements ActionPlaying {
         Bundle bundle = intent.getExtras();
         songs = (ArrayList) bundle.getParcelableArrayList("SongList");
         textContent = intent.getStringExtra("currentSong");
-        textView.setText(textContent);
-        textView.setSelected(true);
+        binding.textView.setText(textContent);
+        binding.textView.setSelected(true);
         position = intent.getIntExtra("position", 0);
         Uri uri = Uri.parse(songs.get(position).toString());
         mediaPlayer = MediaPlayer.create(getApplicationContext(), uri);
         mediaPlayer.start();
-        seekBar.setMax(mediaPlayer.getDuration());
+        binding.seekBar.setMax(mediaPlayer.getDuration());
     }
 
 
